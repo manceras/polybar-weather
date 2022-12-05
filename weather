@@ -1,0 +1,31 @@
+#! /usr/bin/python3
+
+# Import all necesary libraries
+from types import NoneType
+from urllib.request import urlopen
+from datetime import datetime
+from json import loads
+import yaml
+from yaml.loader import SafeLoader
+
+# Open config files
+with open('config.yaml', 'r') as configfile:
+    cfg = yaml.load(configfile, Loader=SafeLoader)
+
+# Create an URL with all the options in the configfile
+url = 'https://api.open-meteo.com/v1/forecast?'
+url += 'latitude=' + str(cfg['config']['coords']['latitude'])
+url += '&longitude=' + str(cfg['config']['coords']['longitude'])
+url += '&timezone=' + str(cfg['config']['timezone'])
+url += '&windspeed_unit=' + str(cfg['config']['units']['windspeed'])
+url += '&precipitation_unit=' + str(cfg['config']['units']['precipitation'])
+url += '&temperature_unit=' + str(cfg['config']['units']['temperature'])
+url += '&current_weather=' + str(cfg['options']['current_weather'])
+
+
+
+curent_hour = datetime.now().hour
+data_json = loads(urlopen(url).read())
+print(data_json)
+
+

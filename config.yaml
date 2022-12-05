@@ -1,0 +1,16 @@
+config:
+  coords:
+    latitude: 36.73
+    longitude: -4.62
+  units:
+    temperature: celsius
+    windspeed: kmh
+    precipitacion: mm
+  timezone: auto
+options:
+  # Here you can add all the options you can find in https://open-meteo.com/en/docs#api-documentation
+  current_weather: true
+  hourly:
+    # ...
+  daily:
+    # ...
