@@ -2,6 +2,8 @@
 
 A simple module for polybar that shows weather.
 
+![alt text](https://github.com/AntonioManceraGamez/polybar-weather/blob/development/screenshots/example.png)
+
 ## Usage
 Clone this repository and add to your polybar/config.ini (usually in ``.config/polybar/config.ini``)
 
