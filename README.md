@@ -3,7 +3,7 @@
 A simple module for polybar that shows weather.
 
 ## Usage
-Clone this repository and add to your polybar/config.ini (usually in .config/polybar/config.ini)
+Clone this repository and add to your polybar/config.ini (usually in ``.config/polybar/config.ini``)
 
     [module/weather]
     type = custom/script
