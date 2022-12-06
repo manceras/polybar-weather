@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
 # Import all necesary libraries
+from re import template
 from types import NoneType
 from urllib.request import urlopen
 from datetime import datetime
@@ -13,8 +14,8 @@ with open('config.yaml', 'r') as configfile:
     cfg = yaml.load(configfile, Loader=SafeLoader)
 
 # Create an URL with all the options in the configfile
-url = 'https://api.open-meteo.com/v1/forecast?'
-url += 'latitude=' + str(cfg['config']['coords']['latitude'])
+url = 'https://api.open-meteo.com/v1/forecast?daily=sunset&daily=sunrise'
+url += '&latitude=' + str(cfg['config']['coords']['latitude'])
 url += '&longitude=' + str(cfg['config']['coords']['longitude'])
 url += '&timezone=' + str(cfg['config']['timezone'])
 url += '&windspeed_unit=' + str(cfg['config']['units']['windspeed'])
@@ -22,10 +23,47 @@ url += '&precipitation_unit=' + str(cfg['config']['units']['precipitation'])
 url += '&temperature_unit=' + str(cfg['config']['units']['temperature'])
 url += '&current_weather=' + str(cfg['options']['current_weather'])
 
-
-
-curent_hour = datetime.now().hour
+current_time = datetime.now()
 data_json = loads(urlopen(url).read())
-print(data_json)
+sunrise_time = datetime.strptime(data_json['daily']['sunrise'][0], '%Y-%m-%dT%H:%M')
+sunset_time = datetime.strptime(data_json['daily']['sunset'][0], '%Y-%m-%dT%H:%M')
+at_night = lambda sunset, sunrise, current : 1 if (current >= sunset or current <= sunrise) else 0
 
+if cfg['config']['units']['temperature'] == 'celsius':
+    tmp_unit = '°C'
+else:
+    tmp_unit = '°F'
+
+wmo_to_icons = {
+     0: [u'\ue30d', u'\ue32b'],
+     1: [u'\ue30c', u'\ue379'],
+     2: [u'\ue30c', u'\ue379'],
+     3: [u'\ue30c', u'\ue379'],
+    45: [u'\ue313', u'\ue313'],
+    48: [u'\ue313', u'\ue313'],
+    51: [u'\ue316', u'\ue316'],
+    53: [u'\ue316', u'\ue316'],
+    55: [u'\ue316', u'\ue316'],
+    56: [u'\ue316', u'\ue316'],
+    57: [u'\ue316', u'\ue316'],
+    61: [u'\ue318', u'\ue318'],
+    63: [u'\ue318', u'\ue318'],
+    65: [u'\ue318', u'\ue318'],
+    66: [u'\ue318', u'\ue318'],
+    67: [u'\ue318', u'\ue318'],
+    71: [u'\ue31a', u'\ue31a'],
+    73: [u'\ue31a', u'\ue31a'],
+    75: [u'\ue31a', u'\ue31a'],
+    77: [u'\ue314', u'\ue314'],
+    80: [u'\ue319', u'\ue319'],
+    81: [u'\ue319', u'\ue319'],
+    82: [u'\ue319', u'\ue319'],
+    85: [u'\ue31a', u'\ue31a'],
+    86: [u'\ue31a', u'\ue31a'],
+    95: [u'\ue31d', u'\ue31d'],
+    96: [u'\ue31d', u'\ue31d'],
+    99: [u'\ue31d', u'\ue31d']
+}
+
+print(wmo_to_icons[data_json['current_weather']['weathercode']][at_night(sunset_time, sunrise_time, current_time)], '', str(data_json['current_weather']['temperature']) + tmp_unit)
 
