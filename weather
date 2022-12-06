@@ -1,27 +1,21 @@
-#! /usr/bin/python3
+#!/usr/bin/python3.10
 
-# Import all necesary libraries
-from re import template
-from types import NoneType
 from urllib.request import urlopen
 from datetime import datetime
 from json import loads
 import yaml
 from yaml.loader import SafeLoader
 
-# Open config files
-with open('config.yaml', 'r') as configfile:
+with open('/home/antoniom/.config/polybar/scripts/polybar-weather/config.yaml', 'r') as configfile:
     cfg = yaml.load(configfile, Loader=SafeLoader)
 
-# Create an URL with all the options in the configfile
-url = 'https://api.open-meteo.com/v1/forecast?daily=sunset&daily=sunrise'
+url = 'https://api.open-meteo.com/v1/forecast?daily=sunset&daily=sunrise&current_weather=true'
 url += '&latitude=' + str(cfg['config']['coords']['latitude'])
 url += '&longitude=' + str(cfg['config']['coords']['longitude'])
 url += '&timezone=' + str(cfg['config']['timezone'])
 url += '&windspeed_unit=' + str(cfg['config']['units']['windspeed'])
 url += '&precipitation_unit=' + str(cfg['config']['units']['precipitation'])
 url += '&temperature_unit=' + str(cfg['config']['units']['temperature'])
-url += '&current_weather=' + str(cfg['options']['current_weather'])
 
 current_time = datetime.now()
 data_json = loads(urlopen(url).read())
@@ -66,4 +60,3 @@ wmo_to_icons = {
 }
 
 print(wmo_to_icons[data_json['current_weather']['weathercode']][at_night(sunset_time, sunrise_time, current_time)], '', str(data_json['current_weather']['temperature']) + tmp_unit)
-

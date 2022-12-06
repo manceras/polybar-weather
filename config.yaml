@@ -7,10 +7,3 @@ config:
     windspeed: kmh
     precipitation: mm
   timezone: auto
-options:
-  # Here you can add all the options you can find in https://open-meteo.com/en/docs#api-documentation
-  current_weather: true
-  hourly:
-    # ...
-  daily:
-    # ...
