@@ -1,7 +1,5 @@
 # polybar-weather
 
----
-
 A simple module for polybar that shows weather.
 
 ![alt text](https://github.com/AntonioManceraGamez/polybar-weather/blob/development/screenshots/example.png)
