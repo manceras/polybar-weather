@@ -12,6 +12,9 @@ Clone this repository and add to your polybar/config.ini (usually in ``.config/p
     exec = /path/to/polybar-weather/weather
     interval = 30
 
+## Requiremetns
+Geopy python library, install using ``pip install geopy``
+
 ## Configuration
 Edit the ``config.yaml`` file to change some settings, such as location (coords) and units. These are the defaults:
 
@@ -26,3 +29,4 @@ Edit the ``config.yaml`` file to change some settings, such as location (coords)
 		timezone: auto
 
 Data is gotten from open-weather.com API
+

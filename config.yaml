@@ -1,7 +1,7 @@
 config:
-  coords:
-    latitude: 36.73
-    longitude: -4.62
+  coords: Cartama
+    # latitude: 36.73
+    # longitude: -4.62
   units:
     temperature: celsius
     windspeed: kmh

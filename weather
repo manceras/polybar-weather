@@ -1,17 +1,31 @@
 #!/usr/bin/python3.10
 
+from typing import List
 from urllib.request import urlopen
 from datetime import datetime
 from json import loads
 import yaml
 from yaml.loader import SafeLoader
+from geopy.geocoders import Nominatim
 
 with open('/home/antoniom/.config/polybar/scripts/polybar-weather/config.yaml', 'r') as configfile:
     cfg = yaml.load(configfile, Loader=SafeLoader)
 
+if type(cfg['config']['coords']) == str:
+    loc = Nominatim(user_agent='GetLoc')
+    getLoc = loc.geocode(cfg['config']['coords'])
+    longitude = getLoc.longitude
+    latitude = getLoc.latitude
+elif type(cfg['config']['coords']) == dict:
+    longitude = cfg['config']['coords']['longitude']
+    latitude = cfg['config']['coords']['latitude']
+else:
+    longitude = 0
+    latitude = 0
+
 url = 'https://api.open-meteo.com/v1/forecast?daily=sunset&daily=sunrise&current_weather=true'
-url += '&latitude=' + str(cfg['config']['coords']['latitude'])
-url += '&longitude=' + str(cfg['config']['coords']['longitude'])
+url += '&latitude=' + str(latitude)
+url += '&longitude=' + str(longitude)
 url += '&timezone=' + str(cfg['config']['timezone'])
 url += '&windspeed_unit=' + str(cfg['config']['units']['windspeed'])
 url += '&precipitation_unit=' + str(cfg['config']['units']['precipitation'])
