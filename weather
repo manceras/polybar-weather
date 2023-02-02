@@ -11,14 +11,17 @@ from geopy.geocoders import Nominatim
 with open('/home/antoniom/.config/polybar/scripts/polybar-weather/config.yaml', 'r') as configfile:
     cfg = yaml.load(configfile, Loader=SafeLoader)
 
-if type(cfg['config']['coords']) == str:
+if type(cfg['config']['location']) == str:
     loc = Nominatim(user_agent='GetLoc')
-    getLoc = loc.geocode(cfg['config']['coords'])
+    try:
+        getLoc = loc.geocode(cfg['config']['location'])
+    except:
+        print()
     longitude = getLoc.longitude
     latitude = getLoc.latitude
-elif type(cfg['config']['coords']) == dict:
-    longitude = cfg['config']['coords']['longitude']
-    latitude = cfg['config']['coords']['latitude']
+elif type(cfg['config']['location']) == dict:
+    longitude = cfg['config']['location']['longitude']
+    latitude = cfg['config']['location']['latitude']
 else:
     longitude = 0
     latitude = 0
@@ -32,7 +35,10 @@ url += '&precipitation_unit=' + str(cfg['config']['units']['precipitation'])
 url += '&temperature_unit=' + str(cfg['config']['units']['temperature'])
 
 current_time = datetime.now()
-data_json = loads(urlopen(url).read())
+try:
+    data_json = loads(urlopen(url).read())
+except:
+    print()
 sunrise_time = datetime.strptime(data_json['daily']['sunrise'][0], '%Y-%m-%dT%H:%M')
 sunset_time = datetime.strptime(data_json['daily']['sunset'][0], '%Y-%m-%dT%H:%M')
 at_night = lambda sunset, sunrise, current : 1 if (current >= sunset or current <= sunrise) else 0
