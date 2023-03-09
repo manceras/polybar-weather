@@ -14,7 +14,7 @@ Clone this repository and add to your polybar/config.ini (usually in ``.config/p
 
 ## Requiremetns
 Geopy python library, install using ``pip install geopy``.
-
+A nerd font installed and imported in polybar's config file.
 
 ## Configuration
 Edit the ``config.yaml`` file to change some settings, such as location (coords) and units. These are the defaults:
